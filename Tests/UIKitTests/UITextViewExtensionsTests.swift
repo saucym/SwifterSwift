@@ -31,12 +31,7 @@ final class UITextViewExtensionsTests: XCTestCase {
         let text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation."
         textView.text = text
         textView.scrollToBottom()
-        XCTAssertNotEqual(textView.contentOffset.y, 0.0)
-        #if os(iOS)
-        XCTAssertEqual(textView.contentOffset.y, 87.0)
-        #elseif os(tvOS)
-        XCTAssertEqual(textView.contentOffset.y, 3370.0)
-        #endif
+        XCTAssertGreaterThan(textView.contentOffset.y, 0.0)
 
         textView.scrollToTop()
         XCTAssertNotEqual(textView.contentOffset.y, 0.0)
@@ -65,8 +60,7 @@ final class UITextViewExtensionsTests: XCTestCase {
         // calling the wrap extension method
         textView.wrapToContent()
 
-        // setting the frame
-        //
+        // Setting the frame:
         // This is important to set the frame after calling the wrapToContent, otherwise
         // boundingRect can give you fractional value, and method call `sizeToFit` inside the
         // wrapToContent would change to the fractional value instead of the ceil value.
