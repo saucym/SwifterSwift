@@ -59,7 +59,7 @@ public extension UIImage {
     /// - Parameter rect: CGRect to crop UIImage to.
     /// - Returns: cropped UIImage
     func cropped(to rect: CGRect) -> UIImage {
-        guard rect.size.width < size.width && rect.size.height < size.height else { return self }
+        guard rect.size.width <= size.width && rect.size.height <= size.height else { return self }
         guard let image: CGImage = cgImage?.cropping(to: rect) else { return self }
         return UIImage(cgImage: image)
     }
@@ -73,7 +73,7 @@ public extension UIImage {
     func scaled(toHeight: CGFloat, opaque: Bool = false) -> UIImage? {
         let scale = toHeight / size.height
         let newWidth = size.width * scale
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: newWidth, height: toHeight), opaque, 0)
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: newWidth, height: toHeight), opaque, self.scale)
         draw(in: CGRect(x: 0, y: 0, width: newWidth, height: toHeight))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -89,7 +89,7 @@ public extension UIImage {
     func scaled(toWidth: CGFloat, opaque: Bool = false) -> UIImage? {
         let scale = toWidth / size.width
         let newHeight = size.height * scale
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: toWidth, height: newHeight), opaque, 0)
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: toWidth, height: newHeight), opaque, self.scale)
         draw(in: CGRect(x: 0, y: 0, width: toWidth, height: newHeight))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -164,6 +164,19 @@ public extension UIImage {
     /// - Parameter color: color to fill image with.
     /// - Returns: UIImage filled with given color.
     func filled(withColor color: UIColor) -> UIImage {
+
+        #if !os(watchOS)
+        if #available(iOS 10, tvOS 10, *) {
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = scale
+            let renderer = UIGraphicsImageRenderer(size: size, format: format)
+            return renderer.image { context in
+                color.setFill()
+                context.fill(CGRect(origin: .zero, size: size))
+            }
+        }
+        #endif
+
         UIGraphicsBeginImageContextWithOptions(size, false, scale)
         color.setFill()
         guard let context = UIGraphicsGetCurrentContext() else { return self }
@@ -188,8 +201,21 @@ public extension UIImage {
     ///   - color: color to tint image with.
     ///   - blendMode: how to blend the tint
     /// - Returns: UIImage tinted with given color.
-    func tint(_ color: UIColor, blendMode: CGBlendMode) -> UIImage {
-        let drawRect = CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height)
+    func tint(_ color: UIColor, blendMode: CGBlendMode, alpha: CGFloat = 1.0) -> UIImage {
+        let drawRect = CGRect(origin: .zero, size: size)
+
+        #if !os(watchOS)
+        if #available(iOS 10.0, tvOS 10.0, *) {
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = scale
+            return UIGraphicsImageRenderer(size: size, format: format).image { context in
+                color.setFill()
+                context.fill(drawRect)
+                draw(in: drawRect, blendMode: blendMode, alpha: alpha)
+            }
+        }
+        #endif
+
         UIGraphicsBeginImageContextWithOptions(size, false, scale)
         defer {
             UIGraphicsEndImageContext()
@@ -197,7 +223,36 @@ public extension UIImage {
         let context = UIGraphicsGetCurrentContext()
         color.setFill()
         context?.fill(drawRect)
-        draw(in: drawRect, blendMode: blendMode, alpha: 1.0)
+        draw(in: drawRect, blendMode: blendMode, alpha: alpha)
+        return UIGraphicsGetImageFromCurrentImageContext()!
+    }
+
+    /// SwifterSwift: UImage with background color
+    ///
+    /// - Parameters:
+    ///   - backgroundColor: Color to use as background color
+    /// - Returns: UIImage with a background color that is visible where alpha < 1
+    func withBackgroundColor(_ backgroundColor: UIColor) -> UIImage {
+
+        #if !os(watchOS)
+        if #available(iOS 10.0, tvOS 10.0, *) {
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = scale
+            return UIGraphicsImageRenderer(size: size, format: format).image { context in
+                backgroundColor.setFill()
+                context.fill(context.format.bounds)
+                draw(at: .zero)
+            }
+        }
+        #endif
+
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        defer { UIGraphicsEndImageContext() }
+
+        backgroundColor.setFill()
+        UIRectFill(CGRect(origin: .zero, size: size))
+        draw(at: .zero)
+
         return UIGraphicsGetImageFromCurrentImageContext()!
     }
 
@@ -252,6 +307,15 @@ public extension UIImage {
         }
 
         self.init(cgImage: aCgImage)
+    }
+
+    /// SwifterSwift: Create a new image from a base 64 string.
+    ///
+    /// - Parameters:
+    ///   - base64String: a base-64 `String`, representing the image
+    convenience init?(base64String: String) {
+        guard let data = Data(base64Encoded: base64String) else { return nil }
+        self.init(data: data)
     }
 
 }

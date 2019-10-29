@@ -11,13 +11,13 @@
 [![codecov](https://codecov.io/gh/SwifterSwift/SwifterSwift/branch/master/graph/badge.svg)](https://codecov.io/gh/SwifterSwift/SwifterSwift)
 [![docs](http://swifterswift.com/docs/badge.svg)](http://swifterswift.com/docs)
 [![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)](https://swift.org)
-[![Xcode](https://img.shields.io/badge/Xcode-10.2-blue.svg)](https://developer.apple.com/xcode)
+[![Xcode](https://img.shields.io/badge/Xcode-11-blue.svg)](https://developer.apple.com/xcode)
 [![MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)
 [![Slack Channel](https://slackin-ppvrggbpgn.now.sh/badge.svg)](https://slackin-ppvrggbpgn.now.sh/)
 
 SwifterSwift is a collection of **over 500 native Swift extensions**, with handy methods, syntactic sugar, and performance improvements for wide range of primitive data types, UIKit and Cocoa classes –over 500 in 1– for iOS, macOS, tvOS, watchOS and Linux.
 
-### [Whats New in v5?](https://github.com/SwifterSwift/SwifterSwift/blob/master/CHANGELOG.md#v500)
+### [Whats New in v5.1?](https://github.com/SwifterSwift/SwifterSwift/blob/master/CHANGELOG.md#v510)
 
 ## Requirements
 
@@ -26,7 +26,7 @@ SwifterSwift is a collection of **over 500 native Swift extensions**, with handy
 
 ## Looking to use SwifterSwift for older versions of Swift
 
-SwifterSwift is Swift v5.0 compatible starting from v5
+SwifterSwift is Swift v5.0+ compatible starting from v5
 
 - To use with **Swift 3 / Xcode 8.x** please ensure you are using [**`v3.1.1`**](https://github.com/SwifterSwift/SwifterSwift/releases/tag/3.1.1).
 - To use with **Swift 3.2 / Xcode 9.x** please ensure you are using [**`v3.2.0`**](https://github.com/SwifterSwift/SwifterSwift/releases/tag/3.2.0).
@@ -47,6 +47,9 @@ SwifterSwift is Swift v5.0 compatible starting from v5
 <h4>- Integrate Foundation extensions only:</h4>
 <pre><code class="ruby language-ruby">pod 'SwifterSwift/Foundation'</code></pre>
 
+<h4>- Integrate UIKit extensions only:</h4>
+<pre><code class="ruby language-ruby">pod 'SwifterSwift/UIKit'</code></pre>
+
 <h4>- Integrate AppKit extensions only:</h4>
 <pre><code class="ruby language-ruby">pod 'SwifterSwift/AppKit'</code></pre>
 
@@ -61,6 +64,9 @@ SwifterSwift is Swift v5.0 compatible starting from v5
 
 <h4>- Integrate SpriteKit extensions only:</h4>
 <pre><code class="ruby language-ruby">pod 'SwifterSwift/SpriteKit'</code></pre>
+
+<h4>- Integrate SceneKit extensions only:</h4>
+<pre><code class="ruby language-ruby">pod 'SwifterSwift/SceneKit'</code></pre>
 
 <h4>- Integrate Dispatch extensions only:</h4>
 <pre><code class="ruby language-ruby">pod 'SwifterSwift/Dispatch'</code></pre>
@@ -86,7 +92,7 @@ let package = Package(
     name: "YOUR_PROJECT_NAME",
     targets: [],
     dependencies: [
-        .package(url: "https://github.com/SwifterSwift/SwifterSwift.git", from: "5.0.0")
+        .package(url: "https://github.com/SwifterSwift/SwifterSwift.git", from: "5.1.0")
     ]
 )
 </code></pre>
@@ -134,7 +140,6 @@ let package = Package(
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/FloatExtensions.swift"><code>Float extensions</code></a></li>
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/FloatingPointExtensions.swift"><code>FloatingPoint extensions</code></a></li>
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/IntExtensions.swift"><code>Int extensions</code></a></li>
-<li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/OptionalExtensions.swift"><code>Optional extensions</code></a></li>
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/SwiftStdlib/OptionalExtensions.swift"><code>Optional extensions</code></a></li>
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/blob/master/Sources/SwifterSwift/SwiftStdlib/RandomAccessCollectionExtensions.swift"><code>RandomAccessCollection extensions</code></a></li>
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/blob/master/Sources/SwifterSwift/SwiftStdlib/RangeReplaceableCollectionExtensions.swift"><code>RangeReplaceableCollection extensions</code></a></li>
@@ -237,6 +242,14 @@ let package = Package(
 </details>
 
 <details>
+<summary>CoreAnimation Extensions</summary>
+</br>
+<ul>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/tree/master/Sources/SwifterSwift/CoreAnimation/CAGradientLayerExtensions.swift"><code>CAGradientLayer extensions</code></a></li>
+</ul>
+</details>
+
+<details>
 <summary>MapKit Extensions</summary>
 </br>
 <ul>
@@ -250,6 +263,23 @@ let package = Package(
 </br>
 <ul>
 <li><a href="https://github.com/SwifterSwift/SwifterSwift/blob/master/Sources/SwifterSwift/SpriteKit/SKNodeExtensions.swift"><code>SKNode extensions</code></a></li>
+</ul>
+</details>
+
+<details>
+<summary>SceneKit Extensions</summary>
+</br>
+<ul>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/blob/master/Sources/SwifterSwift/SceneKit/SCNBoxExtensions.swift"><code>SCNBox extensions</code></a></li>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/blob/master/Sources/SwifterSwift/SceneKit/SCNCone.swift"><code>SCNCone extensions</code></a></li>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/blob/master/Sources/SwifterSwift/SceneKit/SCNCapsule.swift"><code>SCNCapsule extensions</code></a></li>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/blob/master/Sources/SwifterSwift/SceneKit/SCNCylinderExtensions.swift"><code>SCNCylinder extensions</code></a></li>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/blob/master/Sources/SwifterSwift/SceneKit/SCNGeometryExtensions.swift"><code>SCNGeometry extensions</code></a></li>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/blob/master/Sources/SwifterSwift/SceneKit/SCNMaterialExtensions.swift"><code>SCNMaterial extensions</code></a></li>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/blob/master/Sources/SwifterSwift/SceneKit/SCNPlaneExtensions.swift"><code>SCNPlane extensions</code></a></li>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/blob/master/Sources/SwifterSwift/SceneKit/SCNShape.swift"><code>SCNShape extensions</code></a></li>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/blob/master/Sources/SwifterSwift/SceneKit/SCNSphereExtensions.swift"><code>SCNSphere extensions</code></a></li>
+<li><a href="https://github.com/SwifterSwift/SwifterSwift/blob/master/Sources/SwifterSwift/SceneKit/SCNVector3Extensions.swift"><code>SCNVector3 extensions</code></a></li>
 </ul>
 </details>
 

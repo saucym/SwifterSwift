@@ -163,9 +163,7 @@ public extension String {
     ///
     var isPalindrome: Bool {
         let letters = filter { $0.isLetter }
-        
         guard !letters.isEmpty else { return false }
-        
         let midIndex = letters.index(letters.startIndex, offsetBy: letters.count / 2)
         let firstHalf = letters[letters.startIndex..<midIndex]
         let secondHalf = letters[midIndex..<letters.endIndex].reversed()
@@ -241,11 +239,7 @@ public extension String {
     #endif
 
     #if canImport(Foundation)
-    /// SwifterSwift: Check if string is a valid Swift number.
-    ///
-    /// Note:
-    /// In North America, "." is the decimal separator,
-    /// while in many parts of Europe "," is used,
+    /// SwifterSwift: Check if string is a valid Swift number. Note: In North America, "." is the decimal separator, while in many parts of Europe "," is used,
     ///
     ///		"123".isNumeric -> true
     ///     "1.3".isNumeric -> true (en_US)
@@ -443,7 +437,7 @@ public extension String {
 public extension String {
 
     #if canImport(Foundation)
-    /// Float value from string (if applicable).
+    /// SwifterSwift: Float value from string (if applicable).
     ///
     /// - Parameter locale: Locale (default is Locale.current)
     /// - Returns: Optional Float value from given string.
@@ -456,7 +450,7 @@ public extension String {
     #endif
 
     #if canImport(Foundation)
-    /// Double value from string (if applicable).
+    /// SwifterSwift: Double value from string (if applicable).
     ///
     /// - Parameter locale: Locale (default is Locale.current)
     /// - Returns: Optional Double value from given string.
@@ -469,7 +463,7 @@ public extension String {
     #endif
 
     #if canImport(CoreGraphics) && canImport(Foundation)
-    /// CGFloat value from string (if applicable).
+    /// SwifterSwift: CGFloat value from string (if applicable).
     ///
     /// - Parameter locale: Locale (default is Locale.current)
     /// - Returns: Optional CGFloat value from given string.
@@ -619,8 +613,8 @@ public extension String {
     /// - Parameter range: Closed range.
     subscript(safe range: ClosedRange<Int>) -> String? {
         guard let lowerIndex = index(startIndex, offsetBy: max(0, range.lowerBound), limitedBy: endIndex) else { return nil }
-        guard let upperIndex = index(lowerIndex, offsetBy: range.upperBound - range.lowerBound + 1, limitedBy: endIndex) else { return nil }
-        return String(self[lowerIndex..<upperIndex])
+        guard let upperIndex = index(lowerIndex, offsetBy: range.upperBound - range.lowerBound, limitedBy: endIndex) else { return nil }
+        return String(self[lowerIndex...upperIndex])
     }
 
     #if os(iOS) || os(macOS)
@@ -1054,6 +1048,17 @@ public extension String {
         return String(dropLast(suffix.count))
     }
 
+    /// SwifterSwift: Adds prefix to the string.
+    ///
+    ///     "www.apple.com".withPrefix("https://") -> "https://www.apple.com"
+    ///
+    /// - Parameter prefix: Prefix to add to the string.
+    /// - Returns: The string with the prefix prepended.
+    func withPrefix(_ prefix: String) -> String {
+        // https://www.hackingwithswift.com/articles/141/8-useful-swift-extensions
+        guard !hasPrefix(prefix) else { return self }
+        return prefix + self
+    }
 }
 
 // MARK: - Initializers
@@ -1227,6 +1232,8 @@ public extension String {
 
     /// SwifterSwift: NSString appendingPathComponent(str: String)
     ///
+    /// - Note: This method only works with file paths (not, for example, string representations of URLs.
+    ///   See NSString [appendingPathComponent(_:)](https://developer.apple.com/documentation/foundation/nsstring/1417069-appendingpathcomponent)
     /// - Parameter str: the path component to append to the receiver.
     /// - Returns: a new string made by appending aString to the receiver, preceded if necessary by a path separator.
     func appendingPathComponent(_ str: String) -> String {
